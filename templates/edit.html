@@ -1,0 +1,636 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Edit Contact | MtaaBiz</title>
+
+    {% load static %}
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="{% static 'assets/vendor/bootstrap/css/bootstrap.min.css' %}">
+
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+
+        :root {
+            --primary: #2563eb;
+            --primary-dark: #1d4ed8;
+            --dark: #111827;
+            --muted: #64748b;
+            --background: #f4f7fb;
+            --border: #e2e8f0;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--background);
+            color: var(--dark);
+        }
+
+        /* Sidebar */
+
+        .sidebar {
+            width: 250px;
+            height: 100vh;
+            position: fixed;
+            top: 0;
+            left: 0;
+            background: #111827;
+            padding: 30px 20px;
+            color: white;
+        }
+
+        .brand {
+            font-size: 25px;
+            font-weight: 800;
+            margin-bottom: 45px;
+            letter-spacing: -1px;
+        }
+
+        .brand span {
+            color: #60a5fa;
+        }
+
+        .sidebar p {
+            color: #94a3b8;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin: 25px 0 12px;
+        }
+
+        .sidebar a {
+            display: flex;
+            align-items: center;
+            gap: 13px;
+            text-decoration: none;
+            color: #cbd5e1;
+            padding: 13px 15px;
+            border-radius: 9px;
+            margin-bottom: 7px;
+            font-size: 14px;
+            transition: 0.3s;
+        }
+
+        .sidebar a:hover,
+        .sidebar a.active {
+            background: #1e40af;
+            color: white;
+        }
+
+        /* Main Content */
+
+        .main-content {
+            margin-left: 250px;
+            padding: 35px 40px;
+            min-height: 100vh;
+        }
+
+        /* Topbar */
+
+        .topbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 35px;
+        }
+
+        .topbar h2 {
+            font-size: 23px;
+            font-weight: 700;
+        }
+
+        .topbar p {
+            color: var(--muted);
+            font-size: 13px;
+            margin-top: 5px;
+        }
+
+        .admin-profile {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .admin-icon {
+            width: 42px;
+            height: 42px;
+            background: #dbeafe;
+            color: #2563eb;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            font-size: 19px;
+        }
+
+        .admin-profile strong {
+            font-size: 13px;
+        }
+
+        .admin-profile small {
+            display: block;
+            color: var(--muted);
+            font-size: 11px;
+        }
+
+        /* Page Heading */
+
+        .page-heading {
+            margin-bottom: 25px;
+        }
+
+        .page-heading h1 {
+            font-size: 28px;
+            font-weight: 800;
+            letter-spacing: -1px;
+        }
+
+        .page-heading p {
+            color: var(--muted);
+            font-size: 14px;
+            margin-top: 8px;
+        }
+
+        /* Breadcrumb */
+
+        .breadcrumb {
+            font-size: 13px;
+            margin-bottom: 22px;
+        }
+
+        .breadcrumb a {
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        .breadcrumb-item.active {
+            color: var(--muted);
+        }
+
+        /* Form Card */
+
+        .form-card {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            overflow: hidden;
+            max-width: 950px;
+            box-shadow: 0 4px 20px rgba(15, 23, 42, 0.03);
+        }
+
+        .form-card-header {
+            padding: 25px 30px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .form-icon {
+            width: 48px;
+            height: 48px;
+            background: #eff6ff;
+            color: var(--primary);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+        }
+
+        .form-card-header h4 {
+            font-size: 17px;
+            font-weight: 700;
+            margin: 0 0 5px;
+        }
+
+        .form-card-header p {
+            color: var(--muted);
+            font-size: 12px;
+            margin: 0;
+        }
+
+        .form-body {
+            padding: 30px;
+        }
+
+        /* Form Fields */
+
+        .form-label {
+            font-size: 13px;
+            font-weight: 600;
+            color: #334155;
+            margin-bottom: 9px;
+        }
+
+        .form-control {
+            border: 1px solid var(--border);
+            border-radius: 9px;
+            padding: 13px 15px;
+            font-size: 13px;
+            color: #334155;
+            background: #fff;
+            transition: 0.3s;
+        }
+
+        .form-control:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.09);
+        }
+
+        textarea.form-control {
+            resize: vertical;
+            min-height: 160px;
+        }
+
+        .form-text {
+            font-size: 11px;
+            color: #94a3b8;
+            margin-top: 7px;
+        }
+
+        /* Buttons */
+
+        .form-actions {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            gap: 12px;
+            margin-top: 30px;
+            padding-top: 25px;
+            border-top: 1px solid var(--border);
+        }
+
+        .btn-cancel {
+            background: #f1f5f9;
+            color: #475569;
+            padding: 12px 22px;
+            border-radius: 9px;
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 600;
+            transition: 0.3s;
+        }
+
+        .btn-cancel:hover {
+            background: #e2e8f0;
+            color: #111827;
+        }
+
+        .btn-update {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 9px;
+            font-size: 13px;
+            font-weight: 600;
+            transition: 0.3s;
+        }
+
+        .btn-update:hover {
+            background: var(--primary-dark);
+            transform: translateY(-1px);
+        }
+
+        .footer {
+            text-align: center;
+            color: #94a3b8;
+            font-size: 12px;
+            padding: 30px 0 5px;
+        }
+
+        /* Responsive */
+
+        @media (max-width: 991px) {
+
+            .sidebar {
+                width: 75px;
+                padding: 25px 10px;
+            }
+
+            .brand {
+                font-size: 17px;
+                text-align: center;
+            }
+
+            .sidebar p,
+            .sidebar a span {
+                display: none;
+            }
+
+            .sidebar a {
+                justify-content: center;
+                padding: 13px 5px;
+                font-size: 19px;
+            }
+
+            .main-content {
+                margin-left: 75px;
+                padding: 25px 20px;
+            }
+        }
+
+        @media (max-width: 576px) {
+
+            .main-content {
+                padding: 20px 12px;
+            }
+
+            .topbar h2 {
+                font-size: 19px;
+            }
+
+            .admin-profile div:last-child {
+                display: none;
+            }
+
+            .page-heading h1 {
+                font-size: 23px;
+            }
+
+            .form-body {
+                padding: 20px;
+            }
+
+            .form-card-header {
+                padding: 20px;
+            }
+
+            .form-actions {
+                flex-direction: column-reverse;
+            }
+
+            .form-actions a,
+            .form-actions button {
+                width: 100%;
+                text-align: center;
+            }
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+    <!-- Sidebar -->
+
+    <aside class="sidebar">
+
+        <div class="brand">
+            Mtaa<span>Biz.</span>
+        </div>
+
+        <p>Main Menu</p>
+
+        <a href="#">
+            <i class="bi bi-grid"></i>
+            <span>Dashboard</span>
+        </a>
+
+        <a href="/show/" class="active">
+            <i class="bi bi-people"></i>
+            <span>All Contacts</span>
+        </a>
+
+        <p>Management</p>
+
+        <a href="#">
+            <i class="bi bi-gear"></i>
+            <span>Settings</span>
+        </a>
+
+    </aside>
+
+
+    <!-- Main Content -->
+
+    <main class="main-content">
+
+        <!-- Topbar -->
+
+        <div class="topbar">
+
+            <div>
+                <h2>Admin Overview</h2>
+                <p>Manage your customer information efficiently.</p>
+            </div>
+
+            <div class="admin-profile">
+
+                <div class="admin-icon">
+                    <i class="bi bi-person"></i>
+                </div>
+
+                <div>
+                    <strong>Administrator</strong>
+                    <small>System Admin</small>
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- Breadcrumb -->
+
+        <nav aria-label="breadcrumb">
+
+            <ol class="breadcrumb">
+
+                <li class="breadcrumb-item">
+                    <a href="/show/">All Contacts</a>
+                </li>
+
+                <li class="breadcrumb-item active">
+                    Edit Contact
+                </li>
+
+            </ol>
+
+        </nav>
+
+
+        <!-- Page Heading -->
+
+        <div class="page-heading">
+
+            <h1>Edit Contact</h1>
+
+            <p>Update customer information and keep your contact records accurate.</p>
+
+        </div>
+
+
+        <!-- Edit Form -->
+
+        <section class="form-card">
+
+            <div class="form-card-header">
+
+                <div class="form-icon">
+                    <i class="bi bi-person-lines-fill"></i>
+                </div>
+
+                <div>
+                    <h4>Contact Information</h4>
+                    <p>Modify the details below and save your changes.</p>
+                </div>
+
+            </div>
+
+
+            <div class="form-body">
+
+                <form method="post">
+
+                    {% csrf_token %}
+
+                    <div class="row g-4">
+
+                        <!-- Name -->
+
+                        <div class="col-md-6">
+
+                            <label for="name-field" class="form-label">
+                                Full Name
+                            </label>
+
+                            <input
+                                type="text"
+                                name="name"
+                                id="name-field"
+                                class="form-control"
+                                placeholder="Enter full name"
+                                value="{{ contact.name|default:'' }}"
+                                required
+                            >
+
+                        </div>
+
+
+                        <!-- Email -->
+
+                        <div class="col-md-6">
+
+                            <label for="email-field" class="form-label">
+                                Email Address
+                            </label>
+
+                            <input
+                                type="email"
+                                name="email"
+                                id="email-field"
+                                class="form-control"
+                                placeholder="example@email.com"
+                                value="{{ contact.email|default:'' }}"
+                                required
+                            >
+
+                        </div>
+
+
+                        <!-- Subject -->
+
+                        <div class="col-md-12">
+
+                            <label for="subject-field" class="form-label">
+                                Subject
+                            </label>
+
+                            <input
+                                type="text"
+                                name="subject"
+                                id="subject-field"
+                                class="form-control"
+                                placeholder="Enter enquiry subject"
+                                value="{{ contact.subject|default:'' }}"
+                                required
+                            >
+
+                        </div>
+
+
+                        <!-- Message -->
+
+                        <div class="col-md-12">
+
+                            <label for="message-field" class="form-label">
+                                Message
+                            </label>
+
+                            <textarea
+                                name="message"
+                                id="message-field"
+                                class="form-control"
+                                rows="6"
+                                placeholder="Enter contact message"
+                                required
+                            >{{ contact.message|default:'' }}</textarea>
+
+                            <div class="form-text">
+                                Review the customer's message before saving changes.
+                            </div>
+
+                        </div>
+
+
+                    </div>
+
+
+                    <!-- Form Actions -->
+
+                    <div class="form-actions">
+
+                        <a href="/show/" class="btn-cancel">
+                            <i class="bi bi-arrow-left"></i>
+                            Cancel
+                        </a>
+
+                        <button type="submit" class="btn-update">
+                            <i class="bi bi-check-circle"></i>
+                            Save Changes
+                        </button>
+
+                    </div>
+
+                </form>
+
+            </div>
+
+        </section>
+
+
+        <!-- Footer -->
+
+        <div class="footer">
+            &copy; 2026 MtaaBiz. All rights reserved.
+            Designed for smarter business management.
+        </div>
+
+    </main>
+
+
+    <!-- Bootstrap JS -->
+
+    <script src="{% static 'assets/vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+
+</body>
+</html>
